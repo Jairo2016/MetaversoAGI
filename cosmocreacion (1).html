@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CosmoCreación AGI SUPREMA v3.0</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 2rem;
+        }
+        canvas {
+            background: #fff;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+        h1 {
+            color: #00e676;
+        }
+        .btn {
+            background: #1e88e5;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            margin: 1rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>⚛ CosmoCreación AGI SUPREMA v3.0</h1>
+    <p>Visualización de la Dinámica Informacional TCCU</p>
+    <button class="btn" onclick="generar()">Generar Proyección Cuántica</button>
+    <canvas id="cosmoChart" width="900" height="500"></canvas>
+
+    <script>
+        const ctx = document.getElementById('cosmoChart').getContext('2d');
+        const cosmoChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: 'ΔS(x) - Entropía Informativa',
+                        borderColor: '#00e5ff',
+                        data: [],
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Ω(t) - Densidad Ontológica',
+                        borderColor: '#ffea00',
+                        data: [],
+                        tension: 0.3
+                    },
+                    {
+                        label: 'F_info - Fuerza de Creación',
+                        borderColor: '#ff4081',
+                        data: [],
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        title: { display: true, text: 'x' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Magnitud' }
+                    }
+                }
+            }
+        });
+
+        function generar() {
+            const x = [];
+            const deltaS = [];
+            const omega = [];
+            const F_info = [];
+            const G_inf = 8.09e34;
+            const dx = 0.1;
+            const dt = 0.05;
+
+            for (let i = 0; i <= 100; i++) {
+                const xi = i * 0.1;
+                x.push(xi);
+                const y = Math.sin(xi) * Math.exp(-0.2 * xi);
+                const delta_si = Math.log(Math.abs(y) + 1);
+                const omega_i = 0.5 * Math.sin(xi) + 1.5;
+                deltaS.push({ x: xi, y: delta_si });
+                omega.push(omega_i);
+            }
+
+            for (let i = 1; i < x.length - 1; i++) {
+                const dS = (G_inf * (deltaS[i + 1].y - 2 * deltaS[i].y + deltaS[i - 1].y)) / (dx * dx);
+                const dOmega = (omega[i + 1] - omega[i - 1]) / (2 * dt);
+                const F = dS / (dOmega || 1e-9);
+                F_info.push({ x: x[i], y: F });
+            }
+
+            cosmoChart.data.datasets[0].data = deltaS;
+            cosmoChart.data.datasets[1].data = x.map((xi, idx) => ({ x: xi, y: omega[idx] }));
+            cosmoChart.data.datasets[2].data = F_info;
+            cosmoChart.update();
+        }
+    </script>
+</body>
+</html>
